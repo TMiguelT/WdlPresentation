@@ -8,8 +8,8 @@
 * First publicly released on [31 March 2016](https://software.broadinstitute.org/gatk/blog?id=7349)
 
 ---
-# Syntax
-## Example
+## Syntax
+### Example
 ```scala
 workflow helloHaplotypeCaller {
   call haplotypeCaller
@@ -38,15 +38,15 @@ task haplotypeCaller {
 }
 ```
 ---
-# Syntax
-## Structure
+## Syntax
+### Structure
 
 * WDL workflows fundamentally consists of one `workflow` block, and one or more `task` blocks (stages):
 * These `task`s are executed using the `call` command
 * ![](https://software.broadinstitute.org/wdl/img/WDL-workflow.png)
 ---
-# Syntax
-## Workflow
+## Syntax
+### Workflow
 A workflow can consist of a:
 * Call
     ```
@@ -88,8 +88,8 @@ A workflow can consist of a:
     ```
 * Loop
 ---
-# Syntax
-## Tasks
+## Syntax
+### Tasks
 ![](https://software.broadinstitute.org/wdl/img/WDL-task-variables.png)
 A task consists of:
 * Inputs
@@ -131,12 +131,12 @@ A task consists of:
     }
     ```
 ---
-# Strengths
+## Strengths
 
 ---
-# Weaknesses
+## Weaknesses
 ---
-# Comparison
-## CWL
+## Comparison
+### CWL
 
-## Bpipe
+### Bpipe
