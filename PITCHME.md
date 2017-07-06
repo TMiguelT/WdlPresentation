@@ -91,7 +91,6 @@ A workflow can consist of a:
     ```
 +++
 A workflow can consist of a:
-* Loop
 ---
 ## Syntax - Tasks
 ![](https://software.broadinstitute.org/wdl/img/WDL-task-variables.png)
@@ -102,6 +101,8 @@ A task consists of:
       String flags
     }
     ```
++++
+A task consists of:
 * Command
     ```
     task test {
@@ -112,7 +113,7 @@ A task consists of:
     }
     ```
 +++
-A workflow can consist of a:
+A task consists of:
 * Runtime
     ```
     task test {
@@ -125,7 +126,7 @@ A workflow can consist of a:
     }
     ```
 +++
-A workflow can consist of a:
+A task consists of:
 * Output
     ```
     task test {
