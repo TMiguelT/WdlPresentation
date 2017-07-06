@@ -51,6 +51,8 @@ A workflow can consist of a:
       call my_task
     }
     ```
++++
+A workflow can consist of a:
 * Scatter (a parallelized loop):
     ```
     scatter(i in integers) {
@@ -58,6 +60,8 @@ A workflow can consist of a:
       call task2{input: num=task1.output}
     }
     ```
++++
+A workflow can consist of a:
 * Conditional
     ```
     # Call 'y', producing an Int output, in a conditional block:
@@ -66,6 +70,8 @@ A workflow can consist of a:
       Int y_out = y.out
     }
     ```
++++
+A workflow can consist of a:
 * Output:
     This is optional. If this isn't defined, all outputs from all `call`s are used as outputs.
     ```
@@ -83,6 +89,8 @@ A workflow can consist of a:
       }
     }
     ```
++++
+A workflow can consist of a:
 * Loop
 ---
 ## Syntax - Tasks
@@ -103,6 +111,8 @@ A task consists of:
       }
     }
     ```
++++
+A workflow can consist of a:
 * Runtime
     ```
     task test {
@@ -114,6 +124,8 @@ A task consists of:
       }
     }
     ```
++++
+A workflow can consist of a:
 * Output
     ```
     task test {
