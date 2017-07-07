@@ -1,3 +1,16 @@
 .reveal pre code {
-  max-height: 500px
+  max-height: 450px;
+  overflow: scroll;
+}
+
+.reveal pre {
+  width: 100%;
+}
+
+.reveal ul {
+  display: block;
+}
+
+.reveal {
+  font-size: 35px;
 }

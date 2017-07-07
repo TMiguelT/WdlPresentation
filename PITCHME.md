@@ -35,9 +35,9 @@ task haplotypeCaller {
 }
 ```
 ---
-## Syntax - Structure
+## Syntax - Overall Structure
 
-* WDL workflows fundamentally consists of one `workflow` block, and one or more `task` blocks (stages):
+* WDL scripts fundamentally consists of one `workflow` block, and one or more `task` blocks (stages):
 * These `task`s are executed using the `call` command
 
 ![](https://software.broadinstitute.org/wdl/img/WDL-workflow.png)
@@ -45,30 +45,22 @@ task haplotypeCaller {
 ## Syntax - Workflow
 A workflow can consist of a:
 * Call
-    ```
-    workflow wf {
-      call my_task
+    ```scala
+    workflow mutect2 {
+      call indexBam {input: bam=sortBam.sortedBam}
+      bamIndex = indexBam.index
     }
     ```
 +++
 ## Syntax - Workflow
 A workflow can consist of a:
 * Scatter (a parallelized loop):
-    ```
-    scatter(i in integers) {
-      call task1{input: num=i}
-      call task2{input: num=task1.output}
-    }
-    ```
-+++
-## Syntax - Workflow
-A workflow can consist of a:
-* Conditional
-    ```
-    # Call 'y', producing an Int output, in a conditional block:
-    if (x_out) {
-      call y
-      Int y_out = y.out
+    ```scala
+    workflow mutect2 {
+      Array[Array[File]] samples = [tumourSamples, normalSamples]
+      scatter(sample in samples) {
+        call align {input: read1=sample[0], read2=sample[1], reference=genomeReference, referenceIndices=genomeIndices}
+      }
     }
     ```
 +++
@@ -76,7 +68,7 @@ A workflow can consist of a:
 A workflow can consist of a:
 * Output:
     This is optional. If this isn't defined, all outputs from all `call`s are used as outputs.
-    ```
+    ```scala
     workflow w {
       String w_input = "some input"
       
@@ -91,6 +83,17 @@ A workflow can consist of a:
       }
     }
     ```
++++
+## Syntax - Workflow
+A workflow can consist of a:
+* Conditional
+    ```scala
+    # Call 'y', producing an Int output, in a conditional block:
+    if (x_out) {
+      call y
+      Int y_out = y.out
+    }
+    ```
 ---
 ## Syntax - Tasks
 ![](https://software.broadinstitute.org/wdl/img/WDL-task-variables.png)
@@ -98,72 +101,112 @@ A workflow can consist of a:
 ## Syntax - Tasks
 A task consists of:
 * Inputs
-    ```
-    task test {
-      String flags
+    ```scala
+    task indexBam {
+      File bam
     }
     ```
 +++
 A task consists of:
 * Command
-    ```
-    task test {
-      String flags
+    ```scala
+    task indexBam {
+      File bam
+        
       command {
-        ps ${flags}
+        samtools index -b ${bam} -
       }
     }
     ```
 +++
 A task consists of:
 * Output
-    ```
-    task test {
+    ```scala
+    task indexBam {
+      File bam
+        
       command {
-        python script.py
+        samtools index -b ${bam} -
       }
+
       output {
-        String a = "a"
-        String ab = a + "b"
+        File index = stdout()
       }
     }
     ```
 +++
 A task consists of:
 * Runtime
-    ```
-    task test {
+    ```scala
+    task indexBam {
+      File bam
+        
       command {
-        python script.py
+        samtools index -b ${bam} -
       }
+
+      output {
+        File index = stdout()
+      }
+
       runtime {
-        docker: ["ubuntu:latest", "broadinstitute/scala-baseimage"]
+        docker: "biocontainers/samtools"
       }
     }
     ```
 ---
+## Cromwell
+* https://github.com/broadinstitute/cromwell
+* Cromwell is the only official WDL execution engine
+* Single Jar file
+* Supports multiple execution environments
+* Does not support all WDL features (imports etc)
++++
+## Cromwell
+```
+cromwell 29
+Usage: java -jar /path/to/cromwell.jar [server|run] [options] <args>...
+
+  --help                   Cromwell - Workflow Execution Engine
+  --version                
+Command: server
+Starts a web server on port 8000.  See the web server documentation for more details about the API endpoints.
+Command: run [options] workflow-source
+Run the workflow and print out the outputs in JSON format.
+  workflow-source          Workflow source file.
+  -i, --inputs <value>     Workflow inputs file.
+  -o, --options <value>    Workflow options file.
+  -t, --type <value>       Workflow type.
+  -v, --type-version <value>
+                           Workflow type version.
+  -l, --labels <value>     Workflow labels file.
+  -p, --imports <value>    A directory or zipfile to search for workflow imports.
+  -m, --metadata-output <value>
+                           An optional directory path to output metadata.
+```
+---
 ## Strengths
 +++
 ## Strengths - Community
-* Actively developed, by a large organisation
-* Official WDL scripts for Broad tools (GATK, Mutect etc)
-* Large community already, meaning plenty of support
+* [Actively developed](https://github.com/broadinstitute/cromwell/graphs/contributors), by a large organisation
+* [Official WDL scripts for Broad tools (GATK, Mutect etc)](https://github.com/broadinstitute/gatk-protected/tree/master/scripts/mutect2_wdl)
+* [Large community already](http://gatkforums.broadinstitute.org/wdl/categories/ask-the-wdl-team), meaning plenty of support
 +++
 ## Strengths - Simplicity
 * Very easy to write workflows, with only unix command-line experience
-* Very easy to install (single Jar file)
+* Very easy to install (single Jar file) and run (`java -jar Cromwell.jar run myWorkflow.wdl myWorkflow_inputs.json`
 * Forced simplicity in workflows
 +++
 ## Strengths - Portability
 * Uses Docker for easy dependency management
-* Compatible with a large number of systems
-* Work on CWL compatibility
+* [Compatible with a large number of systems](https://github.com/broadinstitute/cromwell#backends)
+* [Work on CWL compatibility](https://github.com/broadinstitute/wdl4s/pull/120) and [conversion](https://github.com/common-workflow-language/wdl2cwl)
 ---
 ## Weaknesses
 +++
 ## Weaknesses - Debugging
 * No interactive debugger
-* Confusing logging:
+* [Confusing logging](https://raw.githubusercontent.com/TMiguelT/WdlPresentation/master/errorlog.txt)
 ```
 [2017-07-07 03:30:44,58] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.sortBam:0:1]: executing: docker run \
   --rm -i \
@@ -196,12 +239,20 @@ akka.stream.AbruptTerminationException: Processor actor [Actor[akka://cromwell-s
 Workflow 64eaf010-ee80-4172-858e-782ed9845fc7 transitioned to state Failed
 ```
 +++
+## Weaknesses - Continued
 * The execution engine is a server (?)
 * People need to stop inventing DSLs!
-* Miniscule standard library
-* Still quite an immature language (features like Objects and imports are still in development)
+* [Miniscule standard library](https://github.com/broadinstitute/wdl/blob/develop/SPEC.md#table-of-contents)
+* Still quite an immature language (features like Objects and imports are [still in development](https://github.com/broadinstitute/wdl/blob/develop/SPEC.md#loops))
++++
+## Weaknesses - Continued
+* Their home page looks like this:
+https://software.broadinstitute.org/wdl/
 ---
 ## Comparison
 ### CWL
+* [Stages](http://www.commonwl.org/draft-3/UserGuide.html#First_example)
+* [Workflows](http://www.commonwl.org/draft-3/UserGuide.html#First_workflow)
 
-### Bpipe
+### Ruffus
+* [Example](http://www.ruffus.org.uk/examples/bioinformatics/part2_code.html)
