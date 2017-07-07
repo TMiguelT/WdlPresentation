@@ -1,0 +1,69 @@
+[2017-07-07 03:28:49,07] [info] Slf4jLogger started
+[2017-07-07 03:28:49,19] [info] RUN sub-command
+[2017-07-07 03:28:49,19] [info]   WDL file: /mnt/WdlMutect2/mutect2.wdl
+[2017-07-07 03:28:49,19] [info]   Inputs: /mnt/WdlMutect2/mutect2.inputs
+[2017-07-07 03:28:49,26] [info] SingleWorkflowRunnerActor: Submitting workflow
+[2017-07-07 03:28:49,75] [info] Running with database db.url = jdbc:hsqldb:mem:7063ce64-65be-413a-9e4b-04f35a0be5bb;shutdown=false;hsqldb.tx=mvcc
+[2017-07-07 03:28:56,70] [info] Running migration RenameWorkflowOptionsInMetadata with a read batch size of 100000 and a write batch size of 100000
+[2017-07-07 03:28:56,71] [info] [RenameWorkflowOptionsInMetadata] 100%
+[2017-07-07 03:28:56,82] [info] Metadata summary refreshing every 2 seconds.
+[2017-07-07 03:28:56,88] [info] SingleWorkflowRunnerActor: Workflow submitted 64eaf010-ee80-4172-858e-782ed9845fc7
+[2017-07-07 03:28:56,88] [info] Workflow 64eaf010-ee80-4172-858e-782ed9845fc7 submitted.
+[2017-07-07 03:28:57,75] [info] 1 new workflows fetched
+  017-07-07 03:28:57,75] [info] WorkflowManagerActor Starting workflow 64eaf010-ee80-4172-858e-782ed9845fc7
+[2017-07-07 03:28:57,76] [info] WorkflowManagerActor Successfully started WorkflowActor-64eaf010-ee80-4172-858e-782ed9845fc7
+[2017-07-07 03:28:57,76] [info] Retrieved 1 workflows from the WorkflowStoreActor
+[2017-07-07 03:28:58,10] [info] MaterializeWorkflowDescriptorActor [64eaf010]: Call-to-Backend assignments: mutect2.sortBam -> Local, mutect2.indexBam -> Local, mutect2.align -> Local, mutect2.callVariant
+s -> Local
+[2017-07-07 03:28:58,23] [warn] Local [64eaf010]: Key/s [memory] is/are not supported by backend. Unsupported attributes will not be part of job executions.
+[2017-07-07 03:29:03,73] [info] WorkflowExecutionActor-64eaf010-ee80-4172-858e-782ed9845fc7 [64eaf010]: Starting calls: mutect2.align:0:1, mutect2.align:1:1
+[2017-07-07 03:29:06,84] [warn] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.align:1:1]: Unrecognized runtime attribute keys: memory
+[2017-07-07 03:29:06,84] [warn] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.align:0:1]: Unrecognized runtime attribute keys: memory
+[2017-07-07 03:29:06,94] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.align:0:1]: bwa mem /cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-align/shard-0/inputs/mnt/
+WdlMutect2/ucsc/ucsc.hg19.fasta /cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-align/shard-0/inputs/mnt/WdlMutect2/fastqs/HG003_L1_R1.fastq /cromwell-executions/mutect2/64eaf010-ee
+80-4172-858e-782ed9845fc7/call-align/shard-0/inputs/mnt/WdlMutect2/fastqs/HG003_L1_R2.fastq -R "@RG\tID:tumour\tSM:tumour" > tumour.bam
+[2017-07-07 03:29:06,94] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.align:1:1]: bwa mem /cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-align/shard-1/inputs/mnt/
+WdlMutect2/ucsc/ucsc.hg19.fasta /cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-align/shard-1/inputs/mnt/WdlMutect2/fastqs/HG002_L1_R1.fastq /cromwell-executions/mutect2/64eaf010-ee
+80-4172-858e-782ed9845fc7/call-align/shard-1/inputs/mnt/WdlMutect2/fastqs/HG002_L1_R2.fastq -R "@RG\tID:normal\tSM:normal" > normal.bam
+[2017-07-07 03:29:06,97] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.align:0:1]: executing: docker run \
+  --rm -i \
+   \
+  --entrypoint /bin/bash \
+  -v /mnt/WdlMutect2/cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-align/shard-0:/cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-align/shard-0 \
+  biocontainers/bwa@sha256:97255aa5295ab5e74c2661ce7ee9dc66ce88313d38926f8ac69014c766398094 /cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-align/shard-0/execution/script
+[2017-07-07 03:29:06,97] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.align:1:1]: executing: docker run \
+  --rm -i \
+   \
+  --entrypoint /bin/bash \
+  -v /mnt/WdlMutect2/cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-align/shard-1:/cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-align/shard-1 \
+  biocontainers/bwa@sha256:97255aa5295ab5e74c2661ce7ee9dc66ce88313d38926f8ac69014c766398094 /cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-align/shard-1/execution/script
+[2017-07-07 03:29:07,03] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.align:0:1]: job id: 19782
+[2017-07-07 03:29:07,03] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.align:1:1]: job id: 19785
+[2017-07-07 03:29:07,03] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.align:0:1]: Status change from - to WaitingForReturnCodeFile
+[2017-07-07 03:29:07,04] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.align:1:1]: Status change from - to WaitingForReturnCodeFile
+[2017-07-07 03:30:41,92] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.align:0:1]: Status change from WaitingForReturnCodeFile to Done  
+[2017-07-07 03:30:42,48] [info] WorkflowExecutionActor-64eaf010-ee80-4172-858e-782ed9845fc7 [64eaf010]: Starting calls: mutect2.sortBam:0:1
+[2017-07-07 03:30:44,57] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.sortBam:0:1]: samtools sort -o tumour.sorted.bam unsortedBam
+[2017-07-07 03:30:44,58] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.sortBam:0:1]: executing: docker run \
+  --rm -i \
+   \
+  --entrypoint /bin/bash \
+  -v /mnt/WdlMutect2/cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-sortBam/shard-0:/cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-sortBam/shard-0 \
+  biocontainers/samtools@sha256:2847c6d09a61c2c6a7554bf7f8fb0b44052f768517dc8eca435f21cd2e74256a /cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-sortBam/shard-0/execution/script
+[2017-07-07 03:30:44,60] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.sortBam:0:1]: job id: 20030
+[2017-07-07 03:30:44,60] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.sortBam:0:1]: Status change from - to WaitingForReturnCodeFile   
+[2017-07-07 03:30:46,27] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.sortBam:0:1]: Status change from WaitingForReturnCodeFile to Done
+[2017-07-07 03:30:46,34] [error] WorkflowManagerActor Workflow 64eaf010-ee80-4172-858e-782ed9845fc7 failed (during ExecutingWorkflowState): Job mutect2.sortBam:0:1 exited with return code 1 which has not 
+been declared as a valid return code. See 'continueOnReturnCode' runtime attribute for more details.
+Check the content of stderr for potential additional information: /mnt/WdlMutect2/cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-sortBam/shard-0/execution/stderr
+[2017-07-07 03:30:46,34] [info] WorkflowManagerActor WorkflowActor-64eaf010-ee80-4172-858e-782ed9845fc7 is in a terminal state: WorkflowFailedState
+[2017-07-07 03:30:46,53] [info] Message [cromwell.engine.workflow.lifecycle.execution.WorkflowExecutionActor$CheckRunnable$] from Actor[akka://cromwell-system/user/SingleWorkflowRunnerActor/WorkflowManage
+rActor/WorkflowActor-64eaf010-ee80-4172-858e-782ed9845fc7/WorkflowExecutionActor-64eaf010-ee80-4172-858e-782ed9845fc7#-704046265] to Actor[akka://cromwell-system/user/SingleWorkflowRunnerActor/WorkflowManagerActor/WorkflowActor-64eaf010-ee80-4172-858e-782ed9845fc7/WorkflowExecutionActor-64eaf010-ee80-4172-858e-782ed9845fc7#-704046265] was not delivered. [1] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+[2017-07-07 03:30:48,32] [info] Message [cromwell.backend.async.AsyncBackendJobExecutionActor$IssuePollRequest] from Actor[akka://cromwell-system/user/SingleWorkflowRunnerActor/WorkflowManagerActor/WorkflowActor-64eaf010-ee80-4172-858e-782ed9845fc7/WorkflowExecutionActor-64eaf010-ee80-4172-858e-782ed9845fc7/64eaf010-ee80-4172-858e-782ed9845fc7-EngineJobExecutionActor-mutect2.align:1:1/64eaf010-ee80-4172-858e-782ed9845fc7-BackendJobExecutionActor-64eaf010:mutect2.align:1:1/BackgroundConfigAsyncJobExecutionActor#1713928586] to Actor[akka://cromwell-system/user/SingleWorkflowRunnerActor/WorkflowManagerActor/WorkflowActor-64eaf010-ee80-4172-858e-782ed9845fc7/WorkflowExecutionActor-64eaf010-ee80-4172-858e-782ed9845fc7/64eaf010-ee80-4172-858e-782ed9845fc7-EngineJobExecutionActor-mutect2.align:1:1/64eaf010-ee80-4172-858e-782ed9845fc7-BackendJobExecutionActor-64eaf010:mutect2.align:1:1/BackgroundConfigAsyncJobExecutionActor#1713928586] was not delivered. [2] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+[2017-07-07 03:31:04,46] [info] SingleWorkflowRunnerActor workflow finished with status 'Failed'.
+[2017-07-07 03:31:04,49] [error] Outgoing request stream error
+akka.stream.AbruptTerminationException: Processor actor [Actor[akka://cromwell-system/user/StreamSupervisor-1/flow-13-0-unknown-operation#896307532]] terminated abruptly
+[2017-07-07 03:31:04,49] [error] Outgoing request stream error
+akka.stream.AbruptTerminationException: Processor actor [Actor[akka://cromwell-system/user/StreamSupervisor-1/flow-9-0-unknown-operation#-1309172815]] terminated abruptly
+Workflow 64eaf010-ee80-4172-858e-782ed9845fc7 transitioned to state Failed
+

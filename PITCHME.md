@@ -14,8 +14,6 @@ workflow helloHaplotypeCaller {
   call haplotypeCaller
 }
 
-#This task calls GATK's tool, HaplotypeCaller in normal mode. This tool takes a pre-processed 
-#bam file and discovers variant sites. These raw variant calls are then written to a vcf file.
 task haplotypeCaller {
   File GATK
   File RefFasta
@@ -41,7 +39,8 @@ task haplotypeCaller {
 
 * WDL workflows fundamentally consists of one `workflow` block, and one or more `task` blocks (stages):
 * These `task`s are executed using the `call` command
-* ![](https://software.broadinstitute.org/wdl/img/WDL-workflow.png)
+
+![](https://software.broadinstitute.org/wdl/img/WDL-workflow.png)
 ---
 ## Syntax - Workflow
 A workflow can consist of a:
@@ -52,6 +51,7 @@ A workflow can consist of a:
     }
     ```
 +++
+## Syntax - Workflow
 A workflow can consist of a:
 * Scatter (a parallelized loop):
     ```
@@ -61,6 +61,7 @@ A workflow can consist of a:
     }
     ```
 +++
+## Syntax - Workflow
 A workflow can consist of a:
 * Conditional
     ```
@@ -71,6 +72,7 @@ A workflow can consist of a:
     }
     ```
 +++
+## Syntax - Workflow
 A workflow can consist of a:
 * Output:
     This is optional. If this isn't defined, all outputs from all `call`s are used as outputs.
@@ -89,11 +91,11 @@ A workflow can consist of a:
       }
     }
     ```
-+++
-A workflow can consist of a:
 ---
 ## Syntax - Tasks
 ![](https://software.broadinstitute.org/wdl/img/WDL-task-variables.png)
++++
+## Syntax - Tasks
 A task consists of:
 * Inputs
     ```
@@ -114,19 +116,6 @@ A task consists of:
     ```
 +++
 A task consists of:
-* Runtime
-    ```
-    task test {
-      command {
-        python script.py
-      }
-      runtime {
-        docker: ["ubuntu:latest", "broadinstitute/scala-baseimage"]
-      }
-    }
-    ```
-+++
-A task consists of:
 * Output
     ```
     task test {
@@ -139,11 +128,78 @@ A task consists of:
       }
     }
     ```
++++
+A task consists of:
+* Runtime
+    ```
+    task test {
+      command {
+        python script.py
+      }
+      runtime {
+        docker: ["ubuntu:latest", "broadinstitute/scala-baseimage"]
+      }
+    }
+    ```
 ---
 ## Strengths
-
++++
+## Strengths - Community
+* Actively developed, by a large organisation
+* Official WDL scripts for Broad tools (GATK, Mutect etc)
+* Large community already, meaning plenty of support
++++
+## Strengths - Simplicity
+* Very easy to write workflows, with only unix command-line experience
+* Very easy to install (single Jar file)
+* Forced simplicity in workflows
++++
+## Strengths - Portability
+* Uses Docker for easy dependency management
+* Compatible with a large number of systems
+* Work on CWL compatibility
 ---
 ## Weaknesses
++++
+## Weaknesses - Debugging
+* No interactive debugger
+* Confusing logging:
+```
+[2017-07-07 03:30:44,58] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.sortBam:0:1]: executing: docker run \
+  --rm -i \
+   \
+  --entrypoint /bin/bash \
+  -v /mnt/WdlMutect2/cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-sortBam/shard-0:/cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-sortBam/shard-0 \
+  biocontainers/samtools@sha256:2847c6d09a61c2c6a7554bf7f8fb0b44052f768517dc8eca435f21cd2e74256a /cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-sortBam/shard-0/execution/script
+[2017-07-07 03:30:44,60] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.sortBam:0:1]: job id: 20030
+[2017-07-07 03:30:44,60] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.sortBam:0:1]: Status change from - to WaitingForReturnCodeFile
+[2017-07-07 03:30:46,27] [info] BackgroundConfigAsyncJobExecutionActor [64eaf010mutect2.sortBam:0:1]: Status change from WaitingForReturnCodeFile to Done
+[2017-07-07 03:30:46,34] [error] WorkflowManagerActor Workflow 64eaf010-ee80-4172-858e-782ed9845fc7 failed (during ExecutingWorkflowState): Job mutect2.sortBam:0:1 exited with return code 1 which has not 
+been declared as a valid return code. See 'continueOnReturnCode' runtime attribute for more details.
+Check the content of stderr for potential additional information: /mnt/WdlMutect2/cromwell-executions/mutect2/64eaf010-ee80-4172-858e-782ed9845fc7/call-sortBam/shard-0/execution/stderr
+[2017-07-07 03:30:46,34] [info] WorkflowManagerActor WorkflowActor-64eaf010-ee80-4172-858e-782ed9845fc7 is in a terminal state: WorkflowFailedState
+[2017-07-07 03:30:46,53] [info] Message [cromwell.engine.workflow.lifecycle.execution.WorkflowExecutionActor$CheckRunnable$] from Actor[akka://cromwell-system/user/SingleWorkflowRunnerActor/WorkflowManage
+rActor/WorkflowActor-64eaf010-ee80-4172-858e-782ed9845fc7/WorkflowExecutionActor-64eaf010-ee80-4172-858e-782ed9845fc7#-704046265] to Actor[akka://cromwell-system/user/SingleWorkflowRunnerActor/WorkflowMan
+agerActor/WorkflowActor-64eaf010-ee80-4172-858e-782ed9845fc7/WorkflowExecutionActor-64eaf010-ee80-4172-858e-782ed9845fc7#-704046265] was not delivered. [1] dead letters encountered. This logging can be tu
+rned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+[2017-07-07 03:30:48,32] [info] Message [cromwell.backend.async.AsyncBackendJobExecutionActor$IssuePollRequest] from Actor[akka://cromwell-system/user/SingleWorkflowRunnerActor/WorkflowManagerActor/Workfl
+owActor-64eaf010-ee80-4172-858e-782ed9845fc7/WorkflowExecutionActor-64eaf010-ee80-4172-858e-782ed9845fc7/64eaf010-ee80-4172-858e-782ed9845fc7-EngineJobExecutionActor-mutect2.align:1:1/64eaf010-ee80-4172-8
+58e-782ed9845fc7-BackendJobExecutionActor-64eaf010:mutect2.align:1:1/BackgroundConfigAsyncJobExecutionActor#1713928586] to Actor[akka://cromwell-system/user/SingleWorkflowRunnerActor/WorkflowManagerActor/
+WorkflowActor-64eaf010-ee80-4172-858e-782ed9845fc7/WorkflowExecutionActor-64eaf010-ee80-4172-858e-782ed9845fc7/64eaf010-ee80-4172-858e-782ed9845fc7-EngineJobExecutionActor-mutect2.align:1:1/64eaf010-ee80-
+4172-858e-782ed9845fc7-BackendJobExecutionActor-64eaf010:mutect2.align:1:1/BackgroundConfigAsyncJobExecutionActor#1713928586] was not delivered. [2] dead letters encountered. This logging can be turned of
+f or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+[2017-07-07 03:31:04,46] [info] SingleWorkflowRunnerActor workflow finished with status 'Failed'.
+[2017-07-07 03:31:04,49] [error] Outgoing request stream error
+akka.stream.AbruptTerminationException: Processor actor [Actor[akka://cromwell-system/user/StreamSupervisor-1/flow-13-0-unknown-operation#896307532]] terminated abruptly
+[2017-07-07 03:31:04,49] [error] Outgoing request stream error
+akka.stream.AbruptTerminationException: Processor actor [Actor[akka://cromwell-system/user/StreamSupervisor-1/flow-9-0-unknown-operation#-1309172815]] terminated abruptly
+Workflow 64eaf010-ee80-4172-858e-782ed9845fc7 transitioned to state Failed
+```
++++
+* The execution engine is a server (?)
+* People need to stop inventing DSLs!
+* Miniscule standard library
+* Still quite an immature language (features like Objects and imports are still in development)
 ---
 ## Comparison
 ### CWL
